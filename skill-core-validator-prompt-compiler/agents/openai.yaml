@@ -1,0 +1,4 @@
+interface:
+  display_name: "Validator Prompt Compiler"
+  short_description: "Compile validator+target skill pairs safely"
+  default_prompt: "Use $skill-core-validator-prompt-compiler to compile one validator skill and one target skill into a closed validator prompt."

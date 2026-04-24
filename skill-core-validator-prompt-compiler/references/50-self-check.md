@@ -1,0 +1,41 @@
+# Self-Check
+
+Before returning, verify:
+- exactly one validator skill bundle was targeted
+- exactly one target skill bundle was targeted
+- the authoritative validator and target entry surfaces were resolved correctly
+- the validator and target discovery paths were reported
+- the validator compiler-facing contract was resolved
+- the target compiler-facing contract was resolved
+- every validator-required target role was satisfied by the target contract
+- runtime-critical triggers, inputs, outputs, workflow rules, boundaries, failures, and schemas were preserved
+- the emitted artifact preserves the same audit-versus-invalid gating surface and output-branch surface, or the result is blocked
+- runtime closure was achieved or the result is blocked
+- `summary.requestedTransportMode` is present
+- if the result is ready, `artifacts.transportMode` matches `summary.requestedTransportMode`
+- no workflow step still depends on opening a source-side `references/`, `_shared/`, or `contracts/` file at runtime
+- runtime-called templates were embedded as call contracts
+- runtime assets and shared algorithms that affect execution were embedded or faithfully rewritten
+- deterministic mappings, projection tables, and derived-field rules needed at runtime remain explicit
+- ordered fallback and selection logic remain explicit
+- score bands, threshold interpretations, and rubric text inside runtime-called templates remain explicit
+- every source-side multi-surface consistency rule still compares all required surfaces
+- every branch-sensitive gate, invalid-input gate, and output-branch rule has an explicit landing point
+- every extracted runtime-critical invariant has its own explicit prompt-body landing point
+- nested schema constraints that affect executable validity, output shape, target selection, or output branch remain explicit
+- selector, identity, uniqueness, ordering, and cardinality rules that affect target choice or audit scope remain explicit
+- authority boundaries between primary inputs, support-only context, and non-authority signals remain explicit
+- modality and quantifier semantics remain explicit
+- localization granularity rules remain explicit
+- every landing point named in diagnostics actually exists in the emitted prompt body
+- no runtime-critical rule is preserved only in diagnostics while absent from the emitted prompt body
+- branch-sensitive nested schema member rules are explicit in the emitted prompt body, not just implied by a parent field name
+- non-schema runtime-critical invariants appear in the `Runtime-critical invariants` subsection of `runtime_contract`
+- no class-level summary stands in for multiple distinct runtime-critical invariants
+- no exact duplicate unit appears twice in the prompt
+- omitted support material is recorded in the output json
+- example handling follows the `2000` token threshold rule
+- schema flattening, if used, is explained in diagnostics
+- the output json does not repeat the full prompt body outside `artifacts`
+- `fidelityReport.criticalRuleCoverage` exists
+- for ready results, no `criticalRuleCoverage` entry is left in `blocked` state

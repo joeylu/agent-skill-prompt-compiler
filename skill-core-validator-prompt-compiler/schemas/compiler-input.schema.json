@@ -1,0 +1,176 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://codex.local/skills/skill-core-validator-prompt-compiler/schemas/compiler-input.schema.json",
+  "title": "validator pair compiler input",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "requestContext",
+    "validatorSkill",
+    "targetSkill"
+  ],
+  "$defs": {
+    "fileRecord": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "path",
+        "content"
+      ],
+      "properties": {
+        "path": {
+          "type": "string",
+          "minLength": 1
+        },
+        "content": {
+          "type": "string"
+        }
+      }
+    },
+    "bundleFiles": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "$ref": "#/$defs/fileRecord"
+      }
+    }
+  },
+  "properties": {
+    "requestContext": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "taskSummary",
+        "transportMode"
+      ],
+      "properties": {
+        "taskSummary": {
+          "type": "string",
+          "minLength": 1
+        },
+        "transportMode": {
+          "type": "string",
+          "enum": [
+            "single_prompt",
+            "chat_roles",
+            "both"
+          ]
+        },
+        "tokenBudget": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "maxPromptTokens": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "reserveForUserPayload": {
+              "type": "integer",
+              "minimum": 0
+            }
+          }
+        }
+      }
+    },
+    "validatorSkill": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "skillRoot",
+        "files"
+      ],
+      "properties": {
+        "skillRoot": {
+          "type": "string",
+          "minLength": 1
+        },
+        "entrySkillMdPath": {
+          "type": "string"
+        },
+        "authoritativeEntryPath": {
+          "type": "string"
+        },
+        "validatorContractPath": {
+          "type": "string"
+        },
+        "files": {
+          "$ref": "#/$defs/bundleFiles"
+        }
+      }
+    },
+    "targetSkill": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "skillRoot",
+        "files"
+      ],
+      "properties": {
+        "skillRoot": {
+          "type": "string",
+          "minLength": 1
+        },
+        "entrySkillMdPath": {
+          "type": "string"
+        },
+        "authoritativeEntryPath": {
+          "type": "string"
+        },
+        "targetContractPath": {
+          "type": "string"
+        },
+        "files": {
+          "$ref": "#/$defs/bundleFiles"
+        }
+      }
+    },
+    "targetRuntime": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "supportsSystemRole": {
+          "type": "boolean"
+        },
+        "supportsDeveloperRole": {
+          "type": "boolean"
+        }
+      }
+    },
+    "compilationPolicy": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "missingFilePolicy": {
+          "type": "string",
+          "enum": [
+            "warn",
+            "block"
+          ],
+          "default": "block"
+        },
+        "schemaFlatteningMode": {
+          "type": "string",
+          "enum": [
+            "never",
+            "when_helpful",
+            "always"
+          ],
+          "default": "when_helpful"
+        },
+        "exampleCompactionTokenThreshold": {
+          "type": "integer",
+          "minimum": 0,
+          "default": 2000
+        },
+        "supportUnitPolicy": {
+          "type": "string",
+          "enum": [
+            "keep_when_small",
+            "omit_from_prompt"
+          ],
+          "default": "keep_when_small"
+        }
+      }
+    }
+  }
+}

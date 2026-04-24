@@ -1,0 +1,109 @@
+{
+  "status": "blocked",
+  "summary": {
+    "validatorSkillName": "skill-example-validator",
+    "targetSkillName": "skill-example-target",
+    "requestedTransportMode": "single_prompt",
+    "validatorAuthoritativeEntry": "SKILL.md",
+    "targetAuthoritativeEntry": "SKILL.md",
+    "outputFile": "output-example-validator--for--example-target.json",
+    "notes": "Compilation blocked because the target contract did not close all validator-required target roles safely."
+  },
+  "consumedFiles": [
+    {
+      "bundle": "validator",
+      "path": "SKILL.md",
+      "role": "entry",
+      "status": "found"
+    },
+    {
+      "bundle": "validator",
+      "path": "contracts/validator-compiler.contract.json",
+      "role": "contract",
+      "status": "found"
+    },
+    {
+      "bundle": "target",
+      "path": "SKILL.md",
+      "role": "entry",
+      "status": "found"
+    },
+    {
+      "bundle": "target",
+      "path": "contracts/target-validator.contract.json",
+      "role": "contract",
+      "status": "missing",
+      "notes": "The compiler-facing target contract was required but not supplied."
+    }
+  ],
+  "coverageReport": {
+    "validatorDiscoveryPath": "strict_whitelist",
+    "targetDiscoveryPath": "strict_whitelist",
+    "validatorReferenceMapStatus": "present",
+    "targetReferenceMapStatus": "present",
+    "included": [
+      "validator:SKILL.md",
+      "validator:contracts/validator-compiler.contract.json",
+      "target:SKILL.md"
+    ],
+    "missing": [
+      "target:contracts/target-validator.contract.json"
+    ],
+    "excluded": [],
+    "notes": [
+      "Strict whitelist discovery was used for both bundles because parseable Reference Maps were present.",
+      "Normalization stopped before pair closure because the target contract could not be resolved."
+    ]
+  },
+  "normalizationReport": {
+    "normalizationMode": "semantic_faithful",
+    "closureStatus": "not_evaluated",
+    "targetContractStrategy": "not_evaluated",
+    "runtimeCriticalUnitCount": null,
+    "runtimeSupportUnitCount": null,
+    "provenanceOnlyUnitCount": null,
+    "emittedUnitCount": null,
+    "schemaStrategy": "not_evaluated",
+    "exampleStrategy": "not_evaluated",
+    "templateStrategy": "not_evaluated",
+    "resourceStrategy": "not_evaluated",
+    "sharedAlgorithmStrategy": "not_evaluated",
+    "supportStrategy": "not_evaluated",
+    "deduplicatedUnitCount": 0,
+    "omittedSupportUnitCount": 0,
+    "omittedRuntimeUnitCount": 0,
+    "notes": [
+      "Normalization stopped before runtime prompt assembly because the target validator-facing contract was missing."
+    ]
+  },
+  "tokenReport": {
+    "countingMethod": "not_evaluated",
+    "promptEstimatedTokens": null,
+    "notes": [
+      "Prompt estimation was skipped because compilation blocked before prompt assembly."
+    ]
+  },
+  "fidelityReport": {
+    "semanticFidelity": "blocked",
+    "compactionLevel": "none",
+    "criticalRuleCoverage": [
+      {
+        "ruleClass": "branch_sensitive_gating",
+        "sourceSignals": [
+          "target validator-facing contract required for executable branch closure"
+        ],
+        "landingPoints": [
+          "blocked before runtime artifact assembly"
+        ],
+        "preservationMode": "blocked"
+      }
+    ],
+    "notes": [
+      "The compiler refused to fabricate the missing target contract."
+    ]
+  },
+  "warnings": [],
+  "blockingReasons": [
+    "Missing compiler-facing target contract: contracts/target-validator.contract.json"
+  ]
+}

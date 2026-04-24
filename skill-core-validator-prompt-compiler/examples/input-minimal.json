@@ -1,0 +1,44 @@
+{
+  "requestContext": {
+    "taskSummary": "Compile one validator skill and one target skill into a closed target-specialized validator prompt.",
+    "transportMode": "single_prompt"
+  },
+  "validatorSkill": {
+    "skillRoot": "skill-example-validator",
+    "entrySkillMdPath": "SKILL.md",
+    "validatorContractPath": "contracts/validator-compiler.contract.json",
+    "files": [
+      {
+        "path": "SKILL.md",
+        "content": "---\nname: skill-example-validator\ndescription: Validate one target skill output.\n---\n\n# Purpose\n\nUse this skill to validate one target skill output.\n\n# Reference Map\n\n- Validator compiler contract: `contracts/validator-compiler.contract.json`\n- Output schema: `schemas/report.schema.json`\n"
+      },
+      {
+        "path": "contracts/validator-compiler.contract.json",
+        "content": "{\n  \"contractType\": \"validator_compiler_contract\",\n  \"validatorMode\": \"target_specialized_only\",\n  \"requiredTargetRoles\": [\n    {\n      \"roleKey\": \"target_output_contract\",\n      \"description\": \"Need the authoritative target output contract.\"\n    },\n    {\n      \"roleKey\": \"target_boundary_rules\",\n      \"description\": \"Need the target boundary rules.\"\n    }\n  ],\n  \"closurePolicy\": \"block_on_missing_required_target_role\"\n}\n"
+      }
+    ]
+  },
+  "targetSkill": {
+    "skillRoot": "skill-example-target",
+    "entrySkillMdPath": "SKILL.md",
+    "targetContractPath": "contracts/target-validator.contract.json",
+    "files": [
+      {
+        "path": "SKILL.md",
+        "content": "---\nname: skill-example-target\ndescription: Produce one target output.\n---\n\n# Purpose\n\nUse this skill to produce one target output.\n\n# Reference Map\n\n- Target validator contract: `contracts/target-validator.contract.json`\n- Output schema: `schemas/output.schema.json`\n- Boundary rules: `references/20-boundary.md`\n"
+      },
+      {
+        "path": "contracts/target-validator.contract.json",
+        "content": "{\n  \"contractType\": \"target_validator_contract\",\n  \"targetMode\": \"native_skill_contract\",\n  \"targetSkillName\": \"skill-example-target\",\n  \"providedRoles\": [\n    {\n      \"roleKey\": \"target_output_contract\",\n      \"items\": [\n        {\n          \"path\": \"schemas/output.schema.json\",\n          \"sourceKind\": \"schema\"\n        }\n      ]\n    },\n    {\n      \"roleKey\": \"target_boundary_rules\",\n      \"items\": [\n        {\n          \"path\": \"references/20-boundary.md\",\n          \"sourceKind\": \"reference\"\n        }\n      ]\n    }\n  ]\n}\n"
+      },
+      {
+        "path": "schemas/output.schema.json",
+        "content": "{\n  \"$schema\": \"https://json-schema.org/draft/2020-12/schema\",\n  \"type\": \"object\",\n  \"required\": [\"result\"]\n}\n"
+      },
+      {
+        "path": "references/20-boundary.md",
+        "content": "# Boundary\n\nStay within the target field boundary.\n"
+      }
+    ]
+  }
+}

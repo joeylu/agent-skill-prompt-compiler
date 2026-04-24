@@ -1,0 +1,155 @@
+{
+  "status": "ready",
+  "summary": {
+    "validatorSkillName": "skill-example-validator",
+    "targetSkillName": "skill-example-target",
+    "requestedTransportMode": "single_prompt",
+    "validatorAuthoritativeEntry": "SKILL.md",
+    "targetAuthoritativeEntry": "SKILL.md",
+    "artifactFiles": [
+      "prompt-example-validator--for--example-target.md"
+    ],
+    "outputFile": "output-example-validator--for--example-target.json",
+    "notes": "Compiled into one target-specialized validator prompt. Provenance and compaction diagnostics were kept in the output json."
+  },
+  "artifacts": {
+    "transportMode": "single_prompt",
+    "singlePrompt": {
+      "contentType": "text/markdown",
+      "content": "<skill>\n<identity>\nValidator skill: skill-example-validator\nTarget skill: skill-example-target\nDescription: Example target-specialized validator prompt.\n</identity>\n\n<runtime_contract>\nInputs:\n- One validator-ready payload for the example target is required.\n\nOutputs:\n- Return one validator report packet.\n</runtime_contract>\n\n<workflow>\n1. Read the validator-ready payload.\n2. Apply the embedded target boundary and output-contract rules.\n3. Return the validator report.\n</workflow>\n\n<runtime_materials>\n## Embedded target contract\n- The target output must be an object with required field `result`.\n- Stay within the target field boundary.\n</runtime_materials>\n\n<constraints>\nHard rules:\n- Stay within the chosen target contract.\n\nFailure conditions:\n- If the input does not match the embedded target contract, block.\n</constraints>\n</skill>\n"
+    }
+  },
+  "consumedFiles": [
+    {
+      "bundle": "validator",
+      "path": "SKILL.md",
+      "role": "entry",
+      "status": "found"
+    },
+    {
+      "bundle": "validator",
+      "path": "contracts/validator-compiler.contract.json",
+      "role": "contract",
+      "status": "found"
+    },
+    {
+      "bundle": "target",
+      "path": "SKILL.md",
+      "role": "entry",
+      "status": "found"
+    },
+    {
+      "bundle": "target",
+      "path": "contracts/target-validator.contract.json",
+      "role": "contract",
+      "status": "found"
+    },
+    {
+      "bundle": "target",
+      "path": "schemas/output.schema.json",
+      "role": "schema",
+      "status": "found"
+    },
+    {
+      "bundle": "target",
+      "path": "references/20-boundary.md",
+      "role": "reference",
+      "status": "found"
+    }
+  ],
+  "coverageReport": {
+    "validatorDiscoveryPath": "strict_whitelist",
+    "targetDiscoveryPath": "strict_whitelist",
+    "validatorReferenceMapStatus": "present",
+    "targetReferenceMapStatus": "present",
+    "included": [
+      "validator:SKILL.md",
+      "validator:contracts/validator-compiler.contract.json",
+      "target:SKILL.md",
+      "target:contracts/target-validator.contract.json",
+      "target:schemas/output.schema.json",
+      "target:references/20-boundary.md"
+    ],
+    "missing": [],
+    "excluded": [],
+    "notes": [
+      "Strict whitelist discovery was used for both bundles because parseable Reference Maps were present.",
+      "The target contract closed all validator-required target roles."
+    ]
+  },
+  "normalizationReport": {
+    "normalizationMode": "semantic_faithful",
+    "closureStatus": "closed",
+    "targetContractStrategy": "native_contract",
+    "runtimeCriticalUnitCount": 14,
+    "runtimeSupportUnitCount": 1,
+    "provenanceOnlyUnitCount": 4,
+    "emittedUnitCount": 14,
+    "schemaStrategy": "verbatim",
+    "exampleStrategy": "omitted",
+    "templateStrategy": "not_evaluated",
+    "resourceStrategy": "not_evaluated",
+    "sharedAlgorithmStrategy": "not_evaluated",
+    "supportStrategy": "moved_to_output",
+    "deduplicatedUnitCount": 0,
+    "omittedSupportUnitCount": 1,
+    "omittedRuntimeUnitCount": 0,
+    "notes": [
+      "The runtime prompt was grouped by canonical runtime sections rather than original file order.",
+      "Target-role bindings were embedded as target-specialized validator contract material.",
+      "Runtime closure was satisfied without external validator-folder or target-folder lookups."
+    ]
+  },
+  "tokenReport": {
+    "countingMethod": "character_heuristic",
+    "promptEstimatedTokens": 420,
+    "notes": [
+      "A coarse character-based heuristic was used.",
+      "The prompt artifact estimate left substantial room for later user payload."
+    ]
+  },
+  "fidelityReport": {
+    "semanticFidelity": "preserved",
+    "compactionLevel": "light",
+    "criticalRuleCoverage": [
+      {
+        "ruleClass": "branch_sensitive_gating",
+        "sourceSignals": [
+          "validator input gate",
+          "validator output branch contract"
+        ],
+        "landingPoints": [
+          "<runtime_contract> Inputs",
+          "<constraints> Failure conditions"
+        ],
+        "preservationMode": "explicit"
+      },
+      {
+        "ruleClass": "nested_schema_constraints",
+        "sourceSignals": [
+          "target output schema required field `result`"
+        ],
+        "landingPoints": [
+          "<runtime_materials> Embedded target contract"
+        ],
+        "preservationMode": "explicit"
+      },
+      {
+        "ruleClass": "authority_boundary",
+        "sourceSignals": [
+          "target field boundary rule"
+        ],
+        "landingPoints": [
+          "<runtime_materials> Embedded target contract",
+          "<constraints> Hard rules"
+        ],
+        "preservationMode": "rewritten"
+      }
+    ],
+    "notes": [
+      "Source-shape fidelity was reduced, but pair semantic fidelity was preserved."
+    ]
+  },
+  "warnings": [],
+  "blockingReasons": []
+}

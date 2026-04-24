@@ -1,0 +1,107 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "target validator-facing contract",
+  "type": "object",
+  "additionalProperties": false,
+  "$defs": {
+    "roleKey": {
+      "type": "string",
+      "enum": [
+        "target_identity_contract",
+        "target_input_contract",
+        "target_output_contract",
+        "target_boundary_rules",
+        "target_validation_rules",
+        "target_validation_catalog",
+        "target_examples",
+        "target_reference_context"
+      ]
+    },
+    "sourceKind": {
+      "type": "string",
+      "enum": [
+        "schema",
+        "reference",
+        "rule",
+        "definition",
+        "catalog",
+        "example"
+      ]
+    },
+    "pathItem": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "path",
+        "sourceKind"
+      ],
+      "properties": {
+        "path": {
+          "type": "string",
+          "minLength": 1
+        },
+        "sourceKind": {
+          "$ref": "#/$defs/sourceKind"
+        },
+        "description": {
+          "type": "string"
+        }
+      }
+    },
+    "providedRole": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "roleKey",
+        "items"
+      ],
+      "properties": {
+        "roleKey": {
+          "$ref": "#/$defs/roleKey"
+        },
+        "items": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/pathItem"
+          }
+        },
+        "notes": {
+          "type": "string"
+        }
+      }
+    }
+  },
+  "required": [
+    "contractType",
+    "targetMode",
+    "targetSkillName",
+    "providedRoles"
+  ],
+  "properties": {
+    "contractType": {
+      "const": "target_validator_contract"
+    },
+    "targetMode": {
+      "type": "string",
+      "enum": [
+        "native_skill_contract",
+        "adapter_contract"
+      ]
+    },
+    "targetSkillName": {
+      "type": "string",
+      "minLength": 1
+    },
+    "providedRoles": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "$ref": "#/$defs/providedRole"
+      }
+    },
+    "notes": {
+      "type": "string"
+    }
+  }
+}

@@ -1,0 +1,644 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://codex.local/skills/skill-core-validator-prompt-compiler/schemas/compiler-output.schema.json",
+  "title": "validator pair compiler output",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "status",
+    "summary",
+    "consumedFiles",
+    "coverageReport",
+    "normalizationReport",
+    "tokenReport",
+    "fidelityReport",
+    "warnings",
+    "blockingReasons"
+  ],
+  "$defs": {
+    "stringArray": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "nonEmptyStringArray": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "string"
+      }
+    },
+    "consumedFile": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "bundle",
+        "path",
+        "role",
+        "status"
+      ],
+      "properties": {
+        "bundle": {
+          "type": "string",
+          "enum": [
+            "validator",
+            "target"
+          ]
+        },
+        "path": {
+          "type": "string"
+        },
+        "role": {
+          "type": "string",
+          "enum": [
+            "entry",
+            "contract",
+            "rule",
+            "catalog",
+            "schema",
+            "definition",
+            "shared_context",
+            "reference",
+            "example",
+            "support",
+            "unknown"
+          ]
+        },
+        "status": {
+          "type": "string",
+          "enum": [
+            "found",
+            "missing",
+            "excluded"
+          ]
+        },
+        "notes": {
+          "type": "string"
+        }
+      }
+    },
+    "criticalRuleCoverageEntry": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "ruleClass",
+        "sourceSignals",
+        "landingPoints",
+        "preservationMode"
+      ],
+      "properties": {
+        "ruleClass": {
+          "type": "string",
+          "enum": [
+            "multi_surface_consistency",
+            "branch_sensitive_gating",
+            "nested_schema_constraints",
+            "selector_identity_cardinality",
+            "authority_boundary",
+            "modality_and_quantifier",
+            "localization_granularity"
+          ]
+        },
+        "sourceSignals": {
+          "$ref": "#/$defs/nonEmptyStringArray"
+        },
+        "landingPoints": {
+          "$ref": "#/$defs/nonEmptyStringArray"
+        },
+        "preservationMode": {
+          "type": "string",
+          "enum": [
+            "explicit",
+            "rewritten",
+            "blocked"
+          ]
+        },
+        "notes": {
+          "type": "string"
+        }
+      }
+    }
+  },
+  "properties": {
+    "status": {
+      "type": "string",
+      "enum": [
+        "ready",
+        "blocked"
+      ]
+    },
+    "summary": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "validatorSkillName",
+        "targetSkillName",
+        "requestedTransportMode",
+        "outputFile"
+      ],
+      "properties": {
+        "validatorSkillName": {
+          "type": "string"
+        },
+        "targetSkillName": {
+          "type": "string"
+        },
+        "requestedTransportMode": {
+          "type": "string",
+          "enum": [
+            "single_prompt",
+            "chat_roles",
+            "both"
+          ]
+        },
+        "validatorAuthoritativeEntry": {
+          "type": "string"
+        },
+        "targetAuthoritativeEntry": {
+          "type": "string"
+        },
+        "artifactFiles": {
+          "$ref": "#/$defs/nonEmptyStringArray"
+        },
+        "outputFile": {
+          "type": "string"
+        },
+        "notes": {
+          "type": "string"
+        }
+      }
+    },
+    "artifacts": {
+      "$ref": "https://codex.local/skills/skill-core-validator-prompt-compiler/schemas/prompt-artifact.schema.json"
+    },
+    "consumedFiles": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/consumedFile"
+      }
+    },
+    "coverageReport": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "validatorDiscoveryPath",
+        "targetDiscoveryPath",
+        "validatorReferenceMapStatus",
+        "targetReferenceMapStatus",
+        "included",
+        "missing",
+        "excluded",
+        "notes"
+      ],
+      "properties": {
+        "validatorDiscoveryPath": {
+          "type": "string",
+          "enum": [
+            "strict_whitelist",
+            "fallback_reference_chain",
+            "unresolved"
+          ]
+        },
+        "targetDiscoveryPath": {
+          "type": "string",
+          "enum": [
+            "strict_whitelist",
+            "fallback_reference_chain",
+            "unresolved"
+          ]
+        },
+        "validatorReferenceMapStatus": {
+          "type": "string",
+          "enum": [
+            "present",
+            "missing",
+            "unparseable",
+            "not_evaluated"
+          ]
+        },
+        "targetReferenceMapStatus": {
+          "type": "string",
+          "enum": [
+            "present",
+            "missing",
+            "unparseable",
+            "not_evaluated"
+          ]
+        },
+        "included": {
+          "$ref": "#/$defs/stringArray"
+        },
+        "missing": {
+          "$ref": "#/$defs/stringArray"
+        },
+        "excluded": {
+          "$ref": "#/$defs/stringArray"
+        },
+        "notes": {
+          "$ref": "#/$defs/stringArray"
+        }
+      }
+    },
+    "normalizationReport": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "normalizationMode",
+        "closureStatus",
+        "targetContractStrategy",
+        "schemaStrategy",
+        "exampleStrategy",
+        "templateStrategy",
+        "resourceStrategy",
+        "sharedAlgorithmStrategy",
+        "supportStrategy",
+        "deduplicatedUnitCount",
+        "omittedSupportUnitCount",
+        "omittedRuntimeUnitCount",
+        "notes"
+      ],
+      "properties": {
+        "normalizationMode": {
+          "type": "string",
+          "enum": [
+            "semantic_faithful"
+          ]
+        },
+        "closureStatus": {
+          "type": "string",
+          "enum": [
+            "closed",
+            "blocked_open",
+            "not_evaluated"
+          ]
+        },
+        "targetContractStrategy": {
+          "type": "string",
+          "enum": [
+            "native_contract",
+            "adapter_contract",
+            "mixed",
+            "not_evaluated"
+          ]
+        },
+        "runtimeCriticalUnitCount": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 0
+        },
+        "runtimeSupportUnitCount": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 0
+        },
+        "provenanceOnlyUnitCount": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 0
+        },
+        "emittedUnitCount": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 0
+        },
+        "schemaStrategy": {
+          "type": "string",
+          "enum": [
+            "verbatim",
+            "flattened",
+            "mixed",
+            "not_evaluated"
+          ]
+        },
+        "exampleStrategy": {
+          "type": "string",
+          "enum": [
+            "all_preserved",
+            "minimal_discriminative_set",
+            "omitted",
+            "not_evaluated"
+          ]
+        },
+        "templateStrategy": {
+          "type": "string",
+          "enum": [
+            "embedded_verbatim",
+            "embedded_rewritten",
+            "referenced",
+            "mixed",
+            "not_evaluated"
+          ]
+        },
+        "resourceStrategy": {
+          "type": "string",
+          "enum": [
+            "embedded_verbatim",
+            "embedded_rewritten",
+            "referenced",
+            "mixed",
+            "not_evaluated"
+          ]
+        },
+        "sharedAlgorithmStrategy": {
+          "type": "string",
+          "enum": [
+            "embedded_verbatim",
+            "embedded_rewritten",
+            "referenced",
+            "mixed",
+            "not_evaluated"
+          ]
+        },
+        "supportStrategy": {
+          "type": "string",
+          "enum": [
+            "kept_in_prompt",
+            "moved_to_output",
+            "mixed",
+            "not_evaluated"
+          ]
+        },
+        "deduplicatedUnitCount": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "omittedSupportUnitCount": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "omittedRuntimeUnitCount": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "notes": {
+          "$ref": "#/$defs/stringArray"
+        }
+      }
+    },
+    "tokenReport": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "countingMethod",
+        "promptEstimatedTokens",
+        "notes"
+      ],
+      "properties": {
+        "countingMethod": {
+          "type": "string",
+          "enum": [
+            "provider_native",
+            "local_estimate",
+            "character_heuristic",
+            "not_evaluated"
+          ]
+        },
+        "promptEstimatedTokens": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 0
+        },
+        "notes": {
+          "$ref": "#/$defs/stringArray"
+        }
+      }
+    },
+    "fidelityReport": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "semanticFidelity",
+        "compactionLevel",
+        "criticalRuleCoverage",
+        "notes"
+      ],
+      "properties": {
+        "semanticFidelity": {
+          "type": "string",
+          "enum": [
+            "preserved",
+            "reduced",
+            "blocked"
+          ]
+        },
+        "compactionLevel": {
+          "type": "string",
+          "enum": [
+            "none",
+            "light",
+            "moderate",
+            "aggressive"
+          ]
+        },
+        "criticalRuleCoverage": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/criticalRuleCoverageEntry"
+          }
+        },
+        "notes": {
+          "$ref": "#/$defs/stringArray"
+        }
+      }
+    },
+    "warnings": {
+      "$ref": "#/$defs/stringArray"
+    },
+    "blockingReasons": {
+      "$ref": "#/$defs/stringArray"
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "required": [
+          "status",
+          "summary"
+        ],
+        "properties": {
+          "status": {
+            "const": "ready"
+          }
+        }
+      },
+      "then": {
+        "required": [
+          "artifacts"
+        ],
+        "properties": {
+          "summary": {
+            "required": [
+              "artifactFiles"
+            ]
+          },
+          "normalizationReport": {
+            "properties": {
+              "closureStatus": {
+                "const": "closed"
+              }
+            }
+          },
+          "fidelityReport": {
+            "properties": {
+              "criticalRuleCoverage": {
+                "items": {
+                  "properties": {
+                    "preservationMode": {
+                      "enum": [
+                        "explicit",
+                        "rewritten"
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "required": [
+          "status",
+          "summary"
+        ],
+        "properties": {
+          "status": {
+            "const": "blocked"
+          }
+        }
+      },
+      "then": {
+        "not": {
+          "required": [
+            "artifacts"
+          ]
+        },
+        "properties": {
+          "summary": {
+            "not": {
+              "required": [
+                "artifactFiles"
+              ]
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "required": [
+          "status",
+          "summary"
+        ],
+        "properties": {
+          "status": {
+            "const": "ready"
+          },
+          "summary": {
+            "required": [
+              "requestedTransportMode"
+            ],
+            "properties": {
+              "requestedTransportMode": {
+                "const": "single_prompt"
+              }
+            }
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "artifacts": {
+            "properties": {
+              "transportMode": {
+                "const": "single_prompt"
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "required": [
+          "status",
+          "summary"
+        ],
+        "properties": {
+          "status": {
+            "const": "ready"
+          },
+          "summary": {
+            "required": [
+              "requestedTransportMode"
+            ],
+            "properties": {
+              "requestedTransportMode": {
+                "const": "chat_roles"
+              }
+            }
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "artifacts": {
+            "properties": {
+              "transportMode": {
+                "const": "chat_roles"
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "required": [
+          "status",
+          "summary"
+        ],
+        "properties": {
+          "status": {
+            "const": "ready"
+          },
+          "summary": {
+            "required": [
+              "requestedTransportMode"
+            ],
+            "properties": {
+              "requestedTransportMode": {
+                "const": "both"
+              }
+            }
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "artifacts": {
+            "properties": {
+              "transportMode": {
+                "const": "both"
+              }
+            }
+          }
+        }
+      }
+    }
+  ]
+}

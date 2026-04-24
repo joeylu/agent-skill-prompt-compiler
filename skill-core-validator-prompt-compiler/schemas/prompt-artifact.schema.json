@@ -1,0 +1,132 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://codex.local/skills/skill-core-validator-prompt-compiler/schemas/prompt-artifact.schema.json",
+  "title": "validator pair prompt artifact",
+  "type": "object",
+  "additionalProperties": false,
+  "$defs": {
+    "chatMessage": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "role",
+        "content"
+      ],
+      "properties": {
+        "role": {
+          "type": "string",
+          "enum": [
+            "system",
+            "developer"
+          ]
+        },
+        "content": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    }
+  },
+  "required": [
+    "transportMode"
+  ],
+  "properties": {
+    "transportMode": {
+      "type": "string",
+      "enum": [
+        "single_prompt",
+        "chat_roles",
+        "both"
+      ]
+    },
+    "singlePrompt": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "contentType",
+        "content"
+      ],
+      "properties": {
+        "contentType": {
+          "type": "string",
+          "const": "text/markdown"
+        },
+        "content": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "chatRoles": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "messages"
+      ],
+      "properties": {
+        "messages": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/chatMessage"
+          }
+        }
+      }
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "transportMode": {
+            "const": "single_prompt"
+          }
+        }
+      },
+      "then": {
+        "required": [
+          "singlePrompt"
+        ],
+        "not": {
+          "required": [
+            "chatRoles"
+          ]
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "transportMode": {
+            "const": "chat_roles"
+          }
+        }
+      },
+      "then": {
+        "required": [
+          "chatRoles"
+        ],
+        "not": {
+          "required": [
+            "singlePrompt"
+          ]
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "transportMode": {
+            "const": "both"
+          }
+        }
+      },
+      "then": {
+        "required": [
+          "singlePrompt",
+          "chatRoles"
+        ]
+      }
+    }
+  ]
+}

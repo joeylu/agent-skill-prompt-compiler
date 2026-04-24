@@ -1,0 +1,95 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "validator compiler-facing validator contract",
+  "type": "object",
+  "additionalProperties": false,
+  "$defs": {
+    "roleKey": {
+      "type": "string",
+      "enum": [
+        "target_identity_contract",
+        "target_input_contract",
+        "target_output_contract",
+        "target_boundary_rules",
+        "target_validation_rules",
+        "target_validation_catalog",
+        "target_examples",
+        "target_reference_context"
+      ]
+    },
+    "sourceKind": {
+      "type": "string",
+      "enum": [
+        "schema",
+        "reference",
+        "rule",
+        "definition",
+        "catalog",
+        "example"
+      ]
+    },
+    "roleRequest": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "roleKey",
+        "description"
+      ],
+      "properties": {
+        "roleKey": {
+          "$ref": "#/$defs/roleKey"
+        },
+        "description": {
+          "type": "string",
+          "minLength": 1
+        },
+        "acceptedSourceKinds": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/sourceKind"
+          },
+          "uniqueItems": true
+        }
+      }
+    }
+  },
+  "required": [
+    "contractType",
+    "validatorMode",
+    "requiredTargetRoles",
+    "closurePolicy"
+  ],
+  "properties": {
+    "contractType": {
+      "const": "validator_compiler_contract"
+    },
+    "validatorMode": {
+      "type": "string",
+      "enum": [
+        "target_specialized_only"
+      ]
+    },
+    "requiredTargetRoles": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "$ref": "#/$defs/roleRequest"
+      }
+    },
+    "optionalTargetRoles": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/roleRequest"
+      }
+    },
+    "closurePolicy": {
+      "type": "string",
+      "enum": [
+        "block_on_missing_required_target_role"
+      ]
+    },
+    "notes": {
+      "type": "string"
+    }
+  }
+}
