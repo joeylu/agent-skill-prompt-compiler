@@ -1,6 +1,10 @@
 # Agent Skill Prompt Compiler
 
-Convert Agent Skills into prompt documents for environments that do not support skills.
+Convert Agent Skill folders into prompt documents for prompt-only LLM environments.
+
+Many AI Agent workflows use Skills, but websites, apps, servers, and simple LLM API calls often cannot load a Skill folder directly.
+
+This project helps you reuse the instruction layer of a Skill as a normal prompt document.
 
 ## Why this exists
 
