@@ -1,0 +1,87 @@
+{
+  "status": "ready",
+  "summary": {
+    "skillName": "skill-example",
+    "skillDescription": "Example skill.",
+    "authoritativeEntry": "SKILL.md",
+    "promptFile": "prompt-example.md",
+    "outputFile": "output-example.json",
+    "notes": "Compiled into one normalized runtime prompt. Provenance and compaction diagnostics were kept in the output json."
+  },
+  "consumedFiles": [
+    {
+      "path": "SKILL.md",
+      "role": "entry",
+      "status": "found"
+    },
+    {
+      "path": "schemas/input.schema.json",
+      "role": "schema",
+      "status": "found"
+    },
+    {
+      "path": "references/10-guidance.md",
+      "role": "reference",
+      "status": "found"
+    },
+    {
+      "path": "examples/01-success.md",
+      "role": "example",
+      "status": "found"
+    }
+  ],
+  "coverageReport": {
+    "discoveryPath": "strict_whitelist",
+    "referenceMapStatus": "present",
+    "included": [
+      "SKILL.md",
+      "schemas/input.schema.json",
+      "references/10-guidance.md",
+      "examples/01-success.md"
+    ],
+    "missing": [],
+    "excluded": [],
+    "notes": [
+      "Strict whitelist discovery was used because a parseable Reference Map was present."
+    ]
+  },
+  "normalizationReport": {
+    "normalizationMode": "semantic_faithful",
+    "closureStatus": "closed",
+    "runtimeCriticalUnitCount": 10,
+    "runtimeSupportUnitCount": 1,
+    "provenanceOnlyUnitCount": 3,
+    "emittedUnitCount": 10,
+    "schemaStrategy": "verbatim",
+    "exampleStrategy": "all_preserved",
+    "templateStrategy": "embedded",
+    "resourceStrategy": "not_evaluated",
+    "sharedAlgorithmStrategy": "not_evaluated",
+    "supportStrategy": "moved_to_output",
+    "deduplicatedUnitCount": 0,
+    "omittedSupportUnitCount": 1,
+    "omittedRuntimeUnitCount": 0,
+    "notes": [
+      "The runtime prompt was grouped by canonical runtime sections rather than original file order.",
+      "Source provenance was recorded only in the output json.",
+      "Runtime closure was satisfied without external source-file lookups."
+    ]
+  },
+  "tokenReport": {
+    "countingMethod": "character_heuristic",
+    "promptEstimatedTokens": 280,
+    "notes": [
+      "A coarse character-based heuristic was used.",
+      "The prompt artifact stayed well under half of the supplied context window."
+    ]
+  },
+  "fidelityReport": {
+    "semanticFidelity": "preserved",
+    "compactionLevel": "light",
+    "notes": [
+      "Source-shape fidelity was reduced, but semantic fidelity was preserved."
+    ]
+  },
+  "warnings": [],
+  "blockingReasons": []
+}

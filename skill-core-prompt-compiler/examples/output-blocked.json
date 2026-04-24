@@ -1,0 +1,76 @@
+{
+  "status": "blocked",
+  "summary": {
+    "skillName": "skill-example",
+    "skillDescription": "Example skill.",
+    "authoritativeEntry": "SKILL.md",
+    "promptFile": "prompt-example.md",
+    "outputFile": "output-example.json",
+    "notes": "Compilation blocked because runtime-critical behavior could not be reconstructed safely."
+  },
+  "consumedFiles": [
+    {
+      "path": "SKILL.md",
+      "role": "entry",
+      "status": "found"
+    },
+    {
+      "path": "schemas/input.schema.json",
+      "role": "schema",
+      "status": "missing",
+      "notes": "The authoritative Reference Map required this schema."
+    }
+  ],
+  "coverageReport": {
+    "discoveryPath": "strict_whitelist",
+    "referenceMapStatus": "present",
+    "included": [
+      "SKILL.md"
+    ],
+    "missing": [
+      "schemas/input.schema.json"
+    ],
+    "excluded": [],
+    "notes": [
+      "Strict whitelist discovery was used because a parseable Reference Map was present."
+    ]
+  },
+  "normalizationReport": {
+    "normalizationMode": "semantic_faithful",
+    "closureStatus": "not_evaluated",
+    "runtimeCriticalUnitCount": null,
+    "runtimeSupportUnitCount": null,
+    "provenanceOnlyUnitCount": null,
+    "emittedUnitCount": null,
+    "schemaStrategy": "not_evaluated",
+    "exampleStrategy": "not_evaluated",
+    "templateStrategy": "not_evaluated",
+    "resourceStrategy": "not_evaluated",
+    "sharedAlgorithmStrategy": "not_evaluated",
+    "supportStrategy": "not_evaluated",
+    "deduplicatedUnitCount": 0,
+    "omittedSupportUnitCount": 0,
+    "omittedRuntimeUnitCount": 0,
+    "notes": [
+      "Normalization stopped before runtime prompt assembly because runtime-critical schema material was missing."
+    ]
+  },
+  "tokenReport": {
+    "countingMethod": "not_evaluated",
+    "promptEstimatedTokens": null,
+    "notes": [
+      "Prompt estimation was skipped because compilation blocked before prompt assembly."
+    ]
+  },
+  "fidelityReport": {
+    "semanticFidelity": "blocked",
+    "compactionLevel": "none",
+    "notes": [
+      "The compiler refused to fabricate missing runtime-critical material."
+    ]
+  },
+  "warnings": [],
+  "blockingReasons": [
+    "Missing runtime-critical file: schemas/input.schema.json"
+  ]
+}

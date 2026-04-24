@@ -1,0 +1,222 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "semantic compiler input",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "requestContext",
+    "sourceSkill"
+  ],
+  "$defs": {
+    "fileRecord": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "path",
+        "content"
+      ],
+      "properties": {
+        "path": {
+          "type": "string",
+          "minLength": 1
+        },
+        "content": {
+          "type": "string"
+        }
+      }
+    },
+    "placeholderField": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "name",
+        "syntax",
+        "required"
+      ],
+      "properties": {
+        "name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "syntax": {
+          "type": "string",
+          "minLength": 1
+        },
+        "description": {
+          "type": "string"
+        },
+        "required": {
+          "type": "boolean"
+        },
+        "sourceField": {
+          "type": "string"
+        }
+      }
+    }
+  },
+  "properties": {
+    "requestContext": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "taskSummary",
+        "transportMode"
+      ],
+      "properties": {
+        "taskSummary": {
+          "type": "string",
+          "minLength": 1
+        },
+        "transportMode": {
+          "type": "string",
+          "enum": [
+            "single_prompt",
+            "chat_roles",
+            "both"
+          ]
+        },
+        "tokenBudget": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "maxPromptTokens": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "reserveForUserPayload": {
+              "type": "integer",
+              "minimum": 0
+            }
+          }
+        },
+        "placeholderFields": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/placeholderField"
+          }
+        }
+      }
+    },
+    "sourceSkill": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "skillRoot",
+        "files"
+      ],
+      "properties": {
+        "skillRoot": {
+          "type": "string",
+          "minLength": 1
+        },
+        "entrySkillMdPath": {
+          "type": "string"
+        },
+        "authoritativeEntryPath": {
+          "type": "string"
+        },
+        "files": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/fileRecord"
+          }
+        }
+      }
+    },
+    "targetRuntime": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "providerFamily": {
+          "type": "string"
+        },
+        "modelName": {
+          "type": "string"
+        },
+        "supportsSystemRole": {
+          "type": "boolean"
+        },
+        "supportsDeveloperRole": {
+          "type": "boolean"
+        },
+        "supportsAssistantPrefill": {
+          "type": "boolean"
+        },
+        "maxContextTokens": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "preferredOutputEnvelope": {
+          "type": "string",
+          "enum": [
+            "single_prompt",
+            "chat_roles"
+          ]
+        }
+      }
+    },
+    "compilationPolicy": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "missingFilePolicy": {
+          "type": "string",
+          "enum": [
+            "warn",
+            "block"
+          ],
+          "default": "block"
+        },
+        "schemaFlatteningMode": {
+          "type": "string",
+          "enum": [
+            "never",
+            "when_helpful",
+            "always"
+          ],
+          "default": "when_helpful"
+        },
+        "exampleCompactionTokenThreshold": {
+          "type": "integer",
+          "minimum": 0,
+          "default": 2000
+        },
+        "supportUnitPolicy": {
+          "type": "string",
+          "enum": [
+            "keep_when_small",
+            "omit_from_prompt"
+          ],
+          "default": "keep_when_small"
+        },
+        "runtimeClosureMode": {
+          "type": "string",
+          "enum": [
+            "required",
+            "best_effort"
+          ],
+          "default": "required"
+        },
+        "templateInliningMode": {
+          "type": "string",
+          "enum": [
+            "required_for_runtime_calls",
+            "prefer_inline",
+            "allow_reference"
+          ],
+          "default": "required_for_runtime_calls"
+        },
+        "resourceEmbeddingMode": {
+          "type": "string",
+          "enum": [
+            "required_for_runtime_assets",
+            "prefer_embed",
+            "allow_reference"
+          ],
+          "default": "required_for_runtime_assets"
+        }
+      }
+    }
+  }
+}

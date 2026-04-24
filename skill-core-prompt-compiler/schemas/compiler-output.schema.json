@@ -1,0 +1,347 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "semantic compiler output",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "status",
+    "summary",
+    "consumedFiles",
+    "coverageReport",
+    "normalizationReport",
+    "tokenReport",
+    "fidelityReport",
+    "warnings",
+    "blockingReasons"
+  ],
+  "$defs": {
+    "stringArray": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "consumedFile": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "path",
+        "role",
+        "status"
+      ],
+      "properties": {
+        "path": {
+          "type": "string"
+        },
+        "role": {
+          "type": "string",
+          "enum": [
+            "entry",
+            "rule",
+            "schema",
+            "definition",
+            "shared_context",
+            "reference",
+            "example",
+            "support",
+            "unknown"
+          ]
+        },
+        "status": {
+          "type": "string",
+          "enum": [
+            "found",
+            "missing",
+            "excluded"
+          ]
+        },
+        "notes": {
+          "type": "string"
+        }
+      }
+    }
+  },
+  "properties": {
+    "status": {
+      "type": "string",
+      "enum": [
+        "ready",
+        "blocked"
+      ]
+    },
+    "summary": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "skillName"
+      ],
+      "properties": {
+        "skillName": {
+          "type": "string"
+        },
+        "skillDescription": {
+          "type": "string"
+        },
+        "authoritativeEntry": {
+          "type": "string"
+        },
+        "promptFile": {
+          "type": "string"
+        },
+        "outputFile": {
+          "type": "string"
+        },
+        "notes": {
+          "type": "string"
+        }
+      }
+    },
+    "consumedFiles": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/consumedFile"
+      }
+    },
+    "coverageReport": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "discoveryPath",
+        "referenceMapStatus",
+        "included",
+        "missing",
+        "excluded",
+        "notes"
+      ],
+      "properties": {
+        "discoveryPath": {
+          "type": "string",
+          "enum": [
+            "strict_whitelist",
+            "fallback_reference_chain",
+            "unresolved"
+          ]
+        },
+        "referenceMapStatus": {
+          "type": "string",
+          "enum": [
+            "present",
+            "missing",
+            "unparseable",
+            "not_evaluated"
+          ]
+        },
+        "included": {
+          "$ref": "#/$defs/stringArray"
+        },
+        "missing": {
+          "$ref": "#/$defs/stringArray"
+        },
+        "excluded": {
+          "$ref": "#/$defs/stringArray"
+        },
+        "notes": {
+          "$ref": "#/$defs/stringArray"
+        }
+      }
+    },
+    "normalizationReport": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "normalizationMode",
+        "closureStatus",
+        "schemaStrategy",
+        "exampleStrategy",
+        "templateStrategy",
+        "resourceStrategy",
+        "sharedAlgorithmStrategy",
+        "supportStrategy",
+        "deduplicatedUnitCount",
+        "omittedSupportUnitCount",
+        "omittedRuntimeUnitCount",
+        "notes"
+      ],
+      "properties": {
+        "normalizationMode": {
+          "type": "string",
+          "enum": [
+            "semantic_faithful"
+          ]
+        },
+        "closureStatus": {
+          "type": "string",
+          "enum": [
+            "closed",
+            "open",
+            "not_evaluated"
+          ]
+        },
+        "runtimeCriticalUnitCount": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 0
+        },
+        "runtimeSupportUnitCount": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 0
+        },
+        "provenanceOnlyUnitCount": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 0
+        },
+        "emittedUnitCount": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 0
+        },
+        "schemaStrategy": {
+          "type": "string",
+          "enum": [
+            "verbatim",
+            "flattened",
+            "mixed",
+            "not_evaluated"
+          ]
+        },
+        "exampleStrategy": {
+          "type": "string",
+          "enum": [
+            "all_preserved",
+            "minimal_discriminative_set",
+            "omitted",
+            "not_evaluated"
+          ]
+        },
+        "templateStrategy": {
+          "type": "string",
+          "enum": [
+            "embedded",
+            "referenced",
+            "mixed",
+            "not_evaluated"
+          ]
+        },
+        "resourceStrategy": {
+          "type": "string",
+          "enum": [
+            "embedded",
+            "referenced",
+            "mixed",
+            "not_evaluated"
+          ]
+        },
+        "sharedAlgorithmStrategy": {
+          "type": "string",
+          "enum": [
+            "embedded",
+            "referenced",
+            "mixed",
+            "not_evaluated"
+          ]
+        },
+        "supportStrategy": {
+          "type": "string",
+          "enum": [
+            "kept_in_prompt",
+            "moved_to_output",
+            "mixed",
+            "not_evaluated"
+          ]
+        },
+        "deduplicatedUnitCount": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "omittedSupportUnitCount": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "omittedRuntimeUnitCount": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "notes": {
+          "$ref": "#/$defs/stringArray"
+        }
+      }
+    },
+    "tokenReport": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "countingMethod",
+        "promptEstimatedTokens",
+        "notes"
+      ],
+      "properties": {
+        "countingMethod": {
+          "type": "string",
+          "enum": [
+            "provider_native",
+            "local_estimate",
+            "character_heuristic",
+            "not_evaluated"
+          ]
+        },
+        "promptEstimatedTokens": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 0
+        },
+        "notes": {
+          "$ref": "#/$defs/stringArray"
+        }
+      }
+    },
+    "fidelityReport": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "semanticFidelity",
+        "compactionLevel",
+        "notes"
+      ],
+      "properties": {
+        "semanticFidelity": {
+          "type": "string",
+          "enum": [
+            "preserved",
+            "reduced",
+            "blocked"
+          ]
+        },
+        "compactionLevel": {
+          "type": "string",
+          "enum": [
+            "none",
+            "light",
+            "moderate",
+            "aggressive"
+          ]
+        },
+        "notes": {
+          "$ref": "#/$defs/stringArray"
+        }
+      }
+    },
+    "warnings": {
+      "$ref": "#/$defs/stringArray"
+    },
+    "blockingReasons": {
+      "$ref": "#/$defs/stringArray"
+    }
+  }
+}

@@ -1,0 +1,41 @@
+{
+  "requestContext": {
+    "taskSummary": "Compile one skill into a semantic-faithful normalized prompt artifact.",
+    "transportMode": "single_prompt",
+    "tokenBudget": {
+      "maxPromptTokens": 65536,
+      "reserveForUserPayload": 8000
+    }
+  },
+  "sourceSkill": {
+    "skillRoot": "skill-example",
+    "authoritativeEntryPath": "SKILL.md",
+    "files": [
+      {
+        "path": "SKILL.md",
+        "content": "---\nname: skill-example\ndescription: Example skill.\n---\n\n# Purpose\n\nUse this skill to summarize one document.\n\n# Invocation Policy\n\nExplicit-only.\n\n# Non-goals\n\nDo not rewrite the document.\n\n# Process Overview\n\n1. Read the document\n2. Extract key points\n3. Return a concise summary\n\n# Boundary Rules\n\nStay within the supplied document.\n\n# Failure Rule\n\nIf the document is missing, report the gap.\n\n# Reference Map\n\n- Input schema: `schemas/input.schema.json`\n- Guidance: `references/10-guidance.md`\n- Examples: `examples/01-success.md`\n"
+      },
+      {
+        "path": "schemas/input.schema.json",
+        "content": "{\n  \"$schema\": \"https://json-schema.org/draft/2020-12/schema\",\n  \"type\": \"object\",\n  \"required\": [\"document\"]\n}\n"
+      },
+      {
+        "path": "references/10-guidance.md",
+        "content": "# Guidance\n\nReturn markdown with exactly three sections.\n"
+      },
+      {
+        "path": "examples/01-success.md",
+        "content": "# Success Example\n\nInput asks for a concise summary of one document.\nExpected behavior is to return a concise summary without rewriting source meaning.\n"
+      }
+    ]
+  },
+  "compilationPolicy": {
+    "missingFilePolicy": "block",
+    "schemaFlatteningMode": "when_helpful",
+    "exampleCompactionTokenThreshold": 2000,
+    "supportUnitPolicy": "keep_when_small",
+    "runtimeClosureMode": "required",
+    "templateInliningMode": "required_for_runtime_calls",
+    "resourceEmbeddingMode": "required_for_runtime_assets"
+  }
+}
