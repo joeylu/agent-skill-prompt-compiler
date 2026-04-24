@@ -1,0 +1,4 @@
+interface:
+  display_name: "Semantic Prompt Compiler"
+  short_description: "Normalize one skill into a compact prompt"
+  default_prompt: "Use $skill-core-prompt-compiler to compile one skill into a semantic-faithful normalized prompt artifact."
